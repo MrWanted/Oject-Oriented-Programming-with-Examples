@@ -3,6 +3,28 @@
 This repository contains concise explanations and Java examples covering core **Object-Oriented Programming** concepts, principles, and best practices.
 
 ---
+## Contents
+
+1. Object-Oriented Programming (OOP)
+2. Core OOP Principles
+    - 2.1 Abstraction
+    - 2.2 Encapsulation
+    - 2.3 Inheritance
+    - 2.4 Polymorphism
+3. SOLID Principles
+    - S – Single Responsibility Principle (SRP)
+    - O – Open/Closed Principle (OCP)
+    - L – Liskov Substitution Principle (LSP)
+    - I – Interface Segregation Principle (ISP)
+    - D – Dependency Inversion Principle (DIP)
+4. Dependency Injection (DI)
+5. Method Overriding
+6. Anemic vs Rich Domain Model
+7. Collections & Polymorphism
+8. Static vs Non-Static Methods
+9. Summary
+
+---
 
 ## 1. Object-Oriented Programming (OOP)
 
