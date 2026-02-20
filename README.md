@@ -38,10 +38,17 @@ Objects encapsulate **state (data)** and **behavior (methods)** and interact wit
 ### 2.1 Abstraction
 
 Focuses on **what** an object does rather than **how** it does it.
-
+In Java, abstraction is achieved in two ways:
 ```java
 interface PaymentService {
     void pay(double amount);
+}
+
+abstract class Animal {
+   String name;
+
+   // Abstract method - no implementation
+   abstract void makeSound();
 }
 ```
 
@@ -50,7 +57,7 @@ interface PaymentService {
 ### 2.2 Encapsulation
 
 Bundles data and behavior together and restricts direct access to internal state.
-
+It's achieved using access modifiers + getters and setters.
 ```java
 class Account {
     private double balance;
@@ -65,19 +72,34 @@ class Account {
 
 ### 2.3 Inheritance
 
-Allows a class to reuse and extend another class.
+Inheritance allows a class to acquire the properties and behaviors of another class, promoting code reuse.
 
 ```java
-class Animal {
-    void sound() {
-        System.out.println("Animal sound");
-    }
-}
+// Parent class
+public class Animal {
+   String name;
+   int age;
 
-class Dog extends Animal {
-    void sound() {
-        System.out.println("Dog barks");
-    }
+   public Animal(String name, int age) {
+      this.name = name;
+      this.age = age;
+   }
+   public void sleep() {
+   }
+}
+// Child class
+public class Dog extends Animal {
+   String breed;
+
+   public Dog(String name, int age, String breed) {
+      super(name, age); // calls Animal's constructor
+      this.breed = breed;
+   }
+   // Overriding parent behavior (Polymorphism 👀)
+   @Override
+   public void eat() {
+      System.out.println(name + " is eating dog food.");
+   }
 }
 ```
 
@@ -85,11 +107,57 @@ class Dog extends Animal {
 
 ### 2.4 Polymorphism
 
-Allows different objects to be treated as the same type while behaving differently.
-
+The ability of one object to behave differently depending on the context.
 ```java
-Animal animal = new Dog();
-animal.sound(); // Dog barks
+//1. Compile-Time Polymorphism (Method Overloading)
+class Calculator {
+   // Same method name, different parameters
+   public int add(int a, int b) {
+      return a + b;
+   }
+
+   public double add(double a, double b) {
+      return a + b;
+   }
+
+   public int add(int a, int b, int c) {
+      return a + b + c;
+   }
+}
+
+//2. Runtime Polymorphism (Method Overriding)
+class Shape {
+   public void draw() {
+   }
+}
+
+class Circle extends Shape {
+   @Override
+   public void draw() {
+   }
+}
+
+class Rectangle extends Shape {
+   @Override
+   public void draw() {
+   }
+}
+
+// Parent reference, child objects — this is the magic
+//The reference type is Shape, but Java looks at the actual object at runtime to decide which draw() to call. 
+// This is called Dynamic Method Dispatch.
+Shape s1 = new Circle();
+Shape s2 = new Rectangle();
+
+s1.draw(); 
+s2.draw();
+//Another example
+Shape[] shapes = { new Circle(), new Rectangle(), new Triangle() };
+
+for (Shape shape : shapes) {
+        shape.draw(); // each behaves differently!
+}
+
 ```
 
 ---
