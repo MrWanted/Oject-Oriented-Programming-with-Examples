@@ -168,23 +168,161 @@ for (Shape shape : shapes) {
 
 A class should have only one reason to change.
 
+```java
+// ❌ Bad - this class does too much
+class Employee {
+   public void calculateSalary() { }
+   public void saveToDatabase() { }
+   public void generatePayslipPDF() { }
+}
+
+// ✅ Good - each class has one responsibility
+//If salary logic changes, only SalaryCalculator changes. Nothing else is affected.
+class SalaryCalculator {
+   public void calculateSalary() { }
+}
+
+class EmployeeRepository {
+   public void saveToDatabase() { }
+}
+
+class PayslipGenerator {
+   public void generatePayslipPDF() { }
+}
+```
 ---
 
 ### O – Open/Closed Principle (OCP)
 
 Classes should be open for extension but closed for modification.
+```java
+// ❌ Bad - every new shape requires modifying this class
+class AreaCalculator {
+   public double calculate(Object shape) {
+      if (shape instanceof Circle) {
+         // calculate circle area
+      } else if (shape instanceof Rectangle) {
+         // calculate rectangle area
+      }
+      // adding Triangle means editing this class again!
+   }
+}
 
+// ✅ Good - extend without touching existing code
+interface Shape {
+   double calculateArea();
+}
+
+class Circle implements Shape {
+   double radius;
+   public double calculateArea() { return Math.PI * radius * radius; }
+}
+
+class Rectangle implements Shape {
+   double width, height;
+   public double calculateArea() { return width * height; }
+}
+
+// Adding a new shape? Just create a new class. Nothing else changes.
+class Triangle implements Shape {
+   double base, height;
+   public double calculateArea() { return 0.5 * base * height; }
+}
+```
 ---
 
 ### L – Liskov Substitution Principle (LSP)
 
 Subclasses must be usable wherever their parent class is expected.
-
+If S extends P, you should be able to use S wherever P is expected — without surprises.
 ---
+```java
+// Violating Liskov Substitution Principle
+
+class Bird {
+   public void fly() {
+      System.out.println("This bird can fly.");
+   }
+}
+
+class Eagle extends Bird {
+   // Eagles can fly, so we don't change anything here.
+}
+
+class Penguin extends Bird {
+   @Override
+   public void fly() {
+      throw new UnsupportedOperationException("Penguins can't fly.");
+   }
+}
+
+// Correcting Liskov Substitution Principle
+
+interface Flyable {
+   void fly();
+}
+
+class Bird {
+   public void eat() {
+      System.out.println("This bird is eating.");
+   }
+}
+
+class Eagle extends Bird implements Flyable {
+   @Override
+   public void fly() {
+      System.out.println("This eagle can fly.");
+   }
+}
+
+class Penguin extends Bird {
+   // Penguins cannot fly, so we don't implement Flyable here.
+}
+```
 
 ### I – Interface Segregation Principle (ISP)
 
 Clients should not depend on methods they do not use.
+
+```java
+// A class should not be forced to implement interfaces it doesn't use
+// ❌ Bad - not all workers can do all things
+interface Worker {
+   void work();
+   void eat();
+   void sleep();
+}
+
+class Robot implements Worker {
+   public void work() { System.out.println("Working..."); }
+   public void eat() { } // ❓ Robots don't eat — forced to implement this!
+   public void sleep() { } // ❓ Robots don't sleep either!
+}
+
+// ✅ Good - split into focused interfaces
+interface Workable {
+   void work();
+}
+
+interface Eatable {
+   void eat();
+}
+
+interface Sleepable {
+   void sleep();
+}
+
+class Human implements Workable, Eatable, Sleepable {
+   public void work() { System.out.println("Working..."); }
+   public void eat() { System.out.println("Eating..."); }
+   public void sleep() { System.out.println("Sleeping..."); }
+}
+
+class Robot implements Workable {
+   public void work() { System.out.println("Working..."); }
+   // No forced empty implementations!
+}
+```
 
 ---
 
